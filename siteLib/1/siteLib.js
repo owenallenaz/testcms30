@@ -7,31 +7,32 @@ var exec = require("child_process").exec;
 
 var siteLib = module.exports;
 
-module.exports.startNode = function(script, callback) {
-	callback = callback || function() {}
-	exec(foreverExec + " start " + script, function(err, stdout, stderr) {
+module.exports.startSite = function(site, callback) {
+	callback = callback || function() {};
+	
+	exec(foreverExec + " start -a -l /sv/logs/" + site.name + "_forever.log -o /sv/logs/" + site.name + "_out.log -e /sv/logs/" + site.name + "_error.log " + site.serverJs, function(err, stdout, stderr) {
 		if (err) throw err;
 		callback(null, true);
 	});
 }
 
-module.exports.stopNode = function(script, callback) {
+module.exports.stopSite = function(site, callback) {
 	callback = callback || function() {}
-	exec(foreverExec + " stop " + script, function(err, stdout, stderr) {
+	exec(foreverExec + " stop " + site.serverJs, function(err, stdout, stderr) {
 		if (err) throw err;
 		callback(null, true);
 	});
 }
 
-module.exports.restartNode = function(script, callback) {
+module.exports.restartSite = function(site, callback) {
 	callback = callback || function() {}
-	exec(foreverExec + " restart " + script, function(err, stdout, stderr) {
+	exec(foreverExec + " restart " + site.serverJs, function(err, stdout, stderr) {
 		if (err) throw err;
 		callback(null, true);
 	});
 }
 
-module.exports.getRunningNodes = function(callback) {
+module.exports.getRunningSites = function(callback) {
 	forever.list(null, function(err, sites) {
 		if (sites == null) {
 			sites = [];
@@ -77,7 +78,10 @@ module.exports.boot = function(name, callback) {
 	siteLib.getSite(name, function(err, site) {
 		returnData.site = site;
 		
-		fs.unlink(site.socket, function() {
+		fs.unlink(site.socket, function(err) {
+			// ENOENT == file does not exist, which is the intent of unlink
+			if (err && err.code != "ENOENT") { throw err; }
+			
 			returnData.app.listen(site.socket);
 			console.log(name + " started");
 			

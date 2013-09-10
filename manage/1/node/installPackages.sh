@@ -43,7 +43,7 @@ if [ $ab == 1 ]; then
 else
 	echo "Installing ab"
 	sudo apt-get update
-	sudo apt-get install apache2-utils
+	sudo apt-get install --yes --force-yes apache2-utils
 fi
 
 # iperf
@@ -53,5 +53,5 @@ if [ $iperf == 1 ]; then
 else
 	echo "Installing Iperf"
 	sudo apt-get update
-	sudo apt-get install iperf
+	sudo apt-get install --yes --force-yes iperf
 fi
