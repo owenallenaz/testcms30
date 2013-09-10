@@ -1,0 +1,40 @@
+user vagrant vagrant;
+
+worker_processes 2;
+
+events {
+	worker_connections 1024;
+	use epoll;
+}
+
+http {
+	include /etc/nginx/mime.types;
+	gzip on;
+	gzip_disable "msie6";
+	gzip_comp_level 6;
+	gzip_min_length 1100;
+	gzip_buffers 16 8k;
+	gzip_proxied any;
+	gzip_types text/plain application/xml text/css text/js text/xml application/x-javascript text/javascript application/json application/xml+rss;
+	
+	server {
+		listen 80 default_server;
+		server_name _;
+		return 444;
+	}
+	
+	{{#sites}}
+		server {
+			listen 80;
+			server_name {{#domains}}{{@data}}{{!@last}} {{/@last}}{{/domains}};
+			
+			location / {
+				proxy_pass http://unix:/tmp/{{name}};
+			}
+			
+			location ~* ^.+\.(jpg|jpeg|gif|png|ico|css|zip|tgz|gz|rar|bz2|pdf|txt|tar|wav|bmp|rtf|js|flv|swf|html|htm)$ {
+				root /sv/sites/{{name}};
+			}
+		}
+	{{/sites}}
+}

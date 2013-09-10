@@ -1,0 +1,9 @@
+{
+	"name" : "async_wrapper",
+	"description" : "Async Wrapper",
+	"version" : "0.0.1",
+	"private" : true,
+	"dependencies" : {
+		"async" : ""
+	}
+}

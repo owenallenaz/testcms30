@@ -1,0 +1,10 @@
+{
+	"name" : "tedious-connection-pool_wrapper",
+	"description" : "tedious-connection-pool Wrapper",
+	"version" : "0.0.1",
+	"private" : true,
+	"dependencies" : {
+		"tedious-connection-pool" : "",
+		"tedious" : ""
+	}
+}

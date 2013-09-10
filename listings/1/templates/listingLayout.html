@@ -1,0 +1,16 @@
+<div class="listingLayout">
+	<div class="items">
+		{{#listings}}
+			<div class="item" data-listingid="{{listingid}}">
+				<h3>{{company}}</h3>
+				<div class="address">
+					{{addr1}}<br/>
+					{{city}}, {{state}} {{zip}}<br/>
+				</div>
+				<div class="description">
+					{{listing}}
+				</div>
+			</div>
+		{{/listings}}
+	</div>
+</div>

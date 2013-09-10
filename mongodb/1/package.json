@@ -1,0 +1,9 @@
+{
+	"name" : "mongodb_wrapper",
+	"description" : "Mongodb Wrapper",
+	"version" : "0.0.1",
+	"private" : true,
+	"dependencies" : {
+		"mongodb" : ""
+	}
+}
